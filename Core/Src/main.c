@@ -67,26 +67,25 @@ void SystemClock_Config(void);
   */
 int main(void)
 {
-  HAL_Init();
+HAL_Init();
 
-  SystemClock_Config();
+SystemClock_Config();
 
-	
-	RCC->AHBENR |= RCC_AHBENR_GPIOCEN; // GPIOC Enable
-	RCC->APB1ENR |= RCC_APB1ENR_USART3EN; // USART3 clock Enable	
+RCC->AHBENR |= RCC_AHBENR_GPIOCEN; // GPIOC Enable
+RCC->APB1ENR |= RCC_APB1ENR_USART3EN; // USART3 clock Enable	
 
-	GPIO_InitTypeDef initStr = {GPIO_PIN_10 | GPIO_PIN_11,
-	GPIO_MODE_AF_PP,
-	GPIO_SPEED_FREQ_LOW,
-	GPIO_NOPULL};
+GPIO_InitTypeDef initStr = {GPIO_PIN_10 | GPIO_PIN_11,
+GPIO_MODE_AF_PP,
+GPIO_SPEED_FREQ_LOW,
+GPIO_NOPULL};
 	
-	GPIO_InitTypeDef initStr2 = {GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9,
-	GPIO_MODE_OUTPUT_PP,
-	GPIO_SPEED_FREQ_LOW,
-	GPIO_NOPULL};
+GPIO_InitTypeDef initStr2 = {GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9,
+GPIO_MODE_OUTPUT_PP,
+GPIO_SPEED_FREQ_LOW,
+GPIO_NOPULL};
 	
-	HAL_GPIO_Init(GPIOC, &initStr); // Initialize pins PB10, PB11
-	HAL_GPIO_Init(GPIOC, &initStr2); // Initialize pin PC6, PC7, PC8, PC9
+HAL_GPIO_Init(GPIOC, &initStr); // Initialize pins PB10, PB11
+HAL_GPIO_Init(GPIOC, &initStr2); // Initialize pin PC6, PC7, PC8, PC9
 
 	
 GPIOC->AFR[1] |= (1 << 8);    //Set alternate functions for USART3
@@ -118,176 +117,176 @@ NVIC_SetPriority(USART3_4_IRQn,1); // Set the priority of USART3 interrupt
 	
 //1st checkoff
 
-//	while(1)
+//while(1)
+//{
+//		
+//		
+//	if((USART3->ISR & USART_ISR_RXNE) != 0) // Ready to read the data
 //	{
-//		
-//		
-//		if((USART3->ISR & USART_ISR_RXNE) != 0) // Ready to read the data
-//		{
-//			char c = USART3->RDR;
-//			switch(c){
-//				case 'r':
-//					GPIOC->ODR ^= (GPIO_ODR_6);
-//					break;
+//		char c = USART3->RDR;
+//		switch(c){
+//			case 'r':
+//				GPIOC->ODR ^= (GPIO_ODR_6);
+//				break;
 
 
-//				case 'b':
-//					GPIOC->ODR ^= (GPIO_ODR_7);
-//					break;
+//			case 'b':
+//				GPIOC->ODR ^= (GPIO_ODR_7);
+//				break;
 
 
-//				case 'o':
-//					GPIOC->ODR ^= (GPIO_ODR_8);
-//					break;
+//			case 'o':
+//				GPIOC->ODR ^= (GPIO_ODR_8);
+//				break;
 
 
-//				case 'g':
-//					GPIOC->ODR ^= (GPIO_ODR_9);
-//					break;
+//			case 'g':
+//				GPIOC->ODR ^= (GPIO_ODR_9);
+//				break;
 
 
-//				default:
-//					TransmitStr("error\n");
-//				}		
-//	}
-	//	}
-	TransmitStr("CMD?");
-	flag = 0;
-	while(1)
-	{
+//			default:
+//				TransmitStr("error\n");
+//			}		
+//}
+	//}
+TransmitStr("CMD?");
+flag = 0;
+while(1)
+{
 				
-		if(flag == 1)
-		{
-			TransmitChar(currdata); // Display current data Characters
+	if(flag == 1)
+	{
+		TransmitChar(currdata); // Display current data Characters
 			
 				 
-				if(currdata== '0'){ //Turns Off the LED
+			if(currdata== '0'){ //Turns Off the LED
 	
-					switch(lastdata){
+				switch(lastdata){
 						
-						case 'r': //Red LED off
-							GPIOC->ODR &= ~(1 << 6);
-							TransmitStr("Red LED off\n");
-							TransmitStr("CMD?\n");
-							break;
-						
-						
-						case 'b': //Blue LED off
-							GPIOC->ODR &= ~(1 << 7);
-							TransmitStr("Blue LED off\n");
-							TransmitStr("CMD?\n");
-							break;
+					case 'r': //Red LED off
+						GPIOC->ODR &= ~(1 << 6);
+						TransmitStr("Red LED off\n");
+						TransmitStr("CMD?\n");
+						break;
 						
 						
-						case 'o': //Orange LED off
-							GPIOC->ODR &= ~(1 << 8);
-							TransmitStr("Orange LED off\n");
-							TransmitStr("CMD?\n");
-							break;
+					case 'b': //Blue LED off
+						GPIOC->ODR &= ~(1 << 7);
+						TransmitStr("Blue LED off\n");
+						TransmitStr("CMD?\n");
+						break;
 						
 						
-						case 'g': //Green  LED off
-							GPIOC->ODR &= ~(1 << 9);
-							TransmitStr("Green  LED off\n");
-							TransmitStr("CMD?\n");
-							break;
+					case 'o': //Orange LED off
+						GPIOC->ODR &= ~(1 << 8);
+						TransmitStr("Orange LED off\n");
+						TransmitStr("CMD?\n");
+						break;
 						
 						
-						default: 
-							TransmitStr("Error");
-					}
-					
+					case 'g': //Green  LED off
+						GPIOC->ODR &= ~(1 << 9);
+						TransmitStr("Green  LED off\n");
+						TransmitStr("CMD?\n");
+						break;
+						
+						
+					default: 
+						TransmitStr("Error");
 				}
-				else if(currdata== '1'){ //Turns On the LED
-				
-					switch(lastdata)
-					{	
-						
-						case 'r': // Red LED on
-							GPIOC->ODR |= (1 << 6);
-							TransmitStr("Red LED on\n");
-							TransmitStr("CMD?\n");
-							break;
-						
-						
-						case 'b': // Blue LED on
-							GPIOC->ODR |= (1 << 7);
-							TransmitStr("Blue LED on\n");
-							TransmitStr("CMD?\n");
-							break;
-						
-						
-						case 'o': // Orange LED on
-							GPIOC->ODR |= (1 << 8);
-							TransmitStr("Orange LED on\n");
-							TransmitStr("CMD?\n");
-							break;
-						
-						
-						case 'g': // Green LED on
-							GPIOC->ODR |= (1 << 9);
-							TransmitStr("Green LED on\n");
-							TransmitStr("CMD?\n");
-							break;
-						
-						
-						default: 
-							TransmitStr("Error");
-					}
 					
-				}
+			}
+			else if(currdata== '1'){ //Turns On the LED
 				
-				else if(currdata== '2'){ //Toggles the LED
+				switch(lastdata)
+				{	
+						
+					case 'r': // Red LED on
+						GPIOC->ODR |= (1 << 6);
+						TransmitStr("Red LED on\n");
+						TransmitStr("CMD?\n");
+						break;
+						
+						
+					case 'b': // Blue LED on
+						GPIOC->ODR |= (1 << 7);
+						TransmitStr("Blue LED on\n");
+						TransmitStr("CMD?\n");
+						break;
+						
+						
+					case 'o': // Orange LED on
+						GPIOC->ODR |= (1 << 8);
+						TransmitStr("Orange LED on\n");
+						TransmitStr("CMD?\n");
+						break;
+						
+						
+					case 'g': // Green LED on
+						GPIOC->ODR |= (1 << 9);
+						TransmitStr("Green LED on\n");
+						TransmitStr("CMD?\n");
+						break;
+						
+						
+					default: 
+						TransmitStr("Error");
+				}
+					
+			}
+				
+			else if(currdata== '2'){ //Toggles the LED
 
 			
-					switch(lastdata)
-					{	
+				switch(lastdata)
+				{	
 						
-						case 'r': // Red LED toggled
-							GPIOC->ODR ^= (GPIO_ODR_6);
-							TransmitStr("Red LED toggled\n");
-							TransmitStr("CMD?\n");
-							break;
-						
-						
-						case 'b': // Blue LED toggled
-							GPIOC->ODR ^= (GPIO_ODR_7);
-							TransmitStr("Blue LED toggled\n");
-							TransmitStr("CMD?\n");
-							break;
+					case 'r': // Red LED toggled
+						GPIOC->ODR ^= (GPIO_ODR_6);
+						TransmitStr("Red LED toggled\n");
+						TransmitStr("CMD?\n");
+						break;
 						
 						
-						case 'o': // Orange LED toggled
-							GPIOC->ODR ^= (GPIO_ODR_8);
-							TransmitStr("Orange LED toggled\n");
-							TransmitStr("CMD?\n");
-							break;
+					case 'b': // Blue LED toggled
+						GPIOC->ODR ^= (GPIO_ODR_7);
+						TransmitStr("Blue LED toggled\n");
+						TransmitStr("CMD?\n");
+						break;
 						
 						
-						case 'g': // Green LED toggled
-							GPIOC->ODR ^= (GPIO_ODR_9);
-							TransmitStr("Green LED toggled\n");
-							TransmitStr("CMD?\n");
-							break;
+					case 'o': // Orange LED toggled
+						GPIOC->ODR ^= (GPIO_ODR_8);
+						TransmitStr("Orange LED toggled\n");
+						TransmitStr("CMD?\n");
+						break;
 						
 						
-						default: 
-							TransmitStr("Error");
-					}
-					
-				}
-				else{ 
-						if((currdata != 'r' 
-								& currdata != 'g' 
-								& currdata != 'o' 
-								& currdata != 'g')){
+					case 'g': // Green LED toggled
+						GPIOC->ODR ^= (GPIO_ODR_9);
+						TransmitStr("Green LED toggled\n");
+						TransmitStr("CMD?\n");
+						break;
 						
+						
+					default: 
 						TransmitStr("Error");
-						}
 				}
+					
 			}
-			flag = 0;
+			else{ 
+					if((currdata != 'r' 
+							& currdata != 'g' 
+							& currdata != 'o' 
+							& currdata != 'g')){
+						
+					TransmitStr("Error");
+					}
+			}
 		}
+		flag = 0;
+	}
 }
 
 
